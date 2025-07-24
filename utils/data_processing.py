@@ -27,7 +27,7 @@ def load_and_merge_csvs():
     
     # Save the processed data to the output path
     combined.to_csv(OUTPUT_PATH, index=False)
-    print(f"Comnbined data saved to {OUTPUT_PATH} - {len(combined)} rows")
+    print(f"Combined data saved to {OUTPUT_PATH} - {len(combined)} rows")
         
 if __name__ == "__main__":
     load_and_merge_csvs()
