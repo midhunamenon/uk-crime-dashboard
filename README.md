@@ -1,5 +1,5 @@
 # UK Police Force Crime Dashboard
-This interactive dashboard visualises UK crime data from May 2024 to April 2025 using Plotly Dash. The chart allows filtering by month and visualises crime types in each month
+This interactive dashboard visualises UK crime data from May 2024 to April 2025 using Plotly. The chart allows filtering by month and visualises crime types in each month
 ----
 ## Features
 - Month-wise dropdown filtering
