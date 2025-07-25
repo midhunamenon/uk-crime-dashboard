@@ -11,20 +11,20 @@ This interactive dashboard visualises UK crime data from May 2024 to April 2025 
 <pre>
 <code>```plaintext
 policeforice-crime-dashboard/
-├── assets/ #Main Dash app
+├── assets/             # Main Dash app
     ├── style.css
-├── components/ #Dash layout and charts
+├── components/         # Dash layout and charts
     ├── charts.py
     ├── filters.py
     ├── layout.py
     ├── maps.py
 ├── data/
-│   ├── raw/    #Original monthly CSVs
-│   └── processed/  #Combined cleaned data (not committed)
-├── utils/  # Helper functions
+│   ├── raw/            # Original monthly CSVs
+│   └── processed/      # Combined cleaned data (not committed)
+├── utils/              # Helper functions
     ├── crime_analysis.py
 │   └── data_processing.py
-├── venv/   # Virtual environment (ignored)
+├── venv/               # Virtual environment (ignored)
 ├── .gitignore
 ├── app.py
 ├── requirements.txt
@@ -35,29 +35,38 @@ policeforice-crime-dashboard/
 ## Setup Instructions
 
 ### 1. Clone the repo
+<pre>
 ```bash
 git clone https://github.com/midhunamenon/uk-crime-dashboard.git
 cd policeforice-crime-dashboard
+</pre>
 
 ### 2. Create a virtual environment
+<pre>
 ```bash
 python3 -m venv venv
 source venv/bin/activate
+</pre>
 
 ### 3. Install required packages
+<pre>
 ```bash
 pip install -r requirements.txt
+</pre>
 
 ### 4. Prepare the data
 Place the 12 monthly CSV files into data/raw/, then run:
+<pre>
 ```bash
 python3 utils/data_processing.py  
-
+</pre>
 This will generate the combined dataset at data/processed/Combined_crime_data.csv. Note, this large file is ignored from Git and is generated locally
 
 ### 5. Running the App
+<pre>
 ```bash
 python3 app.py
+</pre>
 
 Then open the browser and navigate to: http://127.0.0.1:8050
 
