@@ -8,7 +8,8 @@ This interactive dashboard visualises UK crime data from May 2024 to April 2025 
 - Data cleaned and merged from 12 months of CSVs
 ----
 ## Folder Structure
-
+<pre>
+<code>```plaintext
 policeforice-crime-dashboard/
 ├── assets/ #Main Dash app
     ├── style.css
@@ -28,35 +29,37 @@ policeforice-crime-dashboard/
 ├── app.py
 ├── requirements.txt
 ├── README.md
+```</code>
+</pre>
 
 ## Setup Instructions
 
 ### 1. Clone the repo
-'''bash
+```bash
 git clone https://github.com/midhunamenon/uk-crime-dashboard.git
 cd policeforice-crime-dashboard
 
 ### 2. Create a virtual environment
-'''bash
+```bash
 python3 -m venv venv
 source venv/bin/activate
 
 ### 3. Install required packages
-'''bash
+```bash
 pip install -r requirements.txt
 
 ### 4. Prepare the data
 Place the 12 monthly CSV files into data/raw/, then run:
-'''bash
+```bash
 python3 utils/data_processing.py  
 
-This will generate the combined dataset at data/processed/Combined_crime_data.csv. Note this large files is ignored from Git and must be generated locally
+This will generate the combined dataset at data/processed/Combined_crime_data.csv. Note, this large file is ignored from Git and is generated locally
 
 ### 5. Running the App
-'''bash
+```bash
 python3 app.py
 
-Then open your browser and navigate to: http://127.0.0.1:8050
+Then open the browser and navigate to: http://127.0.0.1:8050
 
 ## Development Approach
 - Developed using feature branches for major dashboard components
