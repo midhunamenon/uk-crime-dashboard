@@ -27,7 +27,7 @@ layout = html.Div([
    )
 def update_bar_chart(selected_month):
     crime_counts = get_crime_counts_by_type(df, selected_month)
-    fig = px.bar(crime_counts, x="Crime type", y="Count",
-                title=f"Crimes by Type in {selected_month}")
-    fig.update_layout(xaxis_title="Crime Type", yaxis_title="Number of Crimes")
+    fig = px.bar(crime_counts, x="Crime Type", y="Count",
+                 title=f"Crimes by Type in {selected_month}")
+    fig.update_layout(xaxis_title="Crime Type", yaxis_title="Count")
     return fig

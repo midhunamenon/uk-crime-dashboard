@@ -16,9 +16,9 @@ def get_crime_trend_by_type(df: pd.DataFrame) -> pd.DataFrame:
 # Function to get crime counts by type for a specific month
 def get_crime_counts_by_type(df: pd.DataFrame, month: str) -> pd.DataFrame:
     filtered = df[df["Month"] == month]
-    return filtered["Crime type"].value_counts().reset_index(name="Count").rename(
-        columns={"index": "Crime Type", "Crime type": "Count"}
-    )
+    crime_counts = filtered["Crime type"].value_counts().reset_index()
+    crime_counts.columns = ["Crime Type", "Count"] #Explicitly set column names
+    return crime_counts
 
 # Function to get the most common crime types
 def top_n_crime_types(df: pd.DataFrame, n: int = 5) -> list:
