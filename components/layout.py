@@ -4,7 +4,7 @@ from components.time_series import layout as time_series_layout
 
 # Top-level dashboard layout
 layout = html.Div([
-    html.H1("UK Police Force Crime Dashboard"), style={"textAlign": "center"},
+    html.H1("UK Police Force Crime Dashboard", style={"textAlign": "center"}),
 
     html.Div([
         html.H2("Crime Breakdown for Selected Month"),
