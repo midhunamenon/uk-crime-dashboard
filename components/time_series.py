@@ -2,11 +2,11 @@ from dash import dcc, html, Input, Output
 import pandas as pd
 import plotly.graph_objects as go
 import dash
-from utils.crime_analysis import get_crime_counts_by_type
+from utils.crime_analysis import get_crime_trend_by_type
 
 #Load and prepare the dataset
 df = pd.read_csv("data/processed/Combined_crime_data.csv")
-crime_time_series = get_crime_counts_by_type(df)
+crime_time_series = get_crime_trend_by_type(df)
 crime_types = crime_time_series["Crime type"].unique()
 
 #Function to build the interactive line chart
