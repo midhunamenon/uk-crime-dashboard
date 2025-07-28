@@ -23,3 +23,9 @@ def get_crime_counts_by_type(df: pd.DataFrame, month: str) -> pd.DataFrame:
 # Function to get the most common crime types
 def top_n_crime_types(df: pd.DataFrame, n: int = 5) -> list:
     return df["Crime type"].value_counts().head(n).index.tolist()
+
+# Function to get geospatial data for a specific month
+def get_geospatial_data(df: pd.DataFrame, month: str) -> pd.DataFrame:
+    """Returns lat/lon and crume type for a selected month (NaNs removed)."""
+    filtered = df[df["Month"] == month].copy()
+    return filtered[["Latitude", "Longitude", "Crime type"]].dropna()
