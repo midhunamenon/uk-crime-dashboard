@@ -27,5 +27,6 @@ def top_n_crime_types(df: pd.DataFrame, n: int = 5) -> list:
 # Function to get geospatial data for a specific month
 def get_geospatial_data(df: pd.DataFrame, month: str) -> pd.DataFrame:
     """Returns lat/lon and crume type for a selected month (NaNs removed)."""
-    filtered = df[df["Month"] == month].copy()
-    return filtered[["Latitude", "Longitude", "Crime type"]].dropna()
+    #filtered = df[df["Month"] == month].copy()
+    return df[df["Month_Name"] == month].dropna(subset=["Latitude", "Longitude"])
+
