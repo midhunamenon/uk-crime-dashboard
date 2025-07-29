@@ -1,7 +1,8 @@
 from dash import html
 from components.charts import layout as bar_chart_layout
 from components.time_series import layout as time_series_layout
-from components.maps import layout as map_layout
+from components.maps import map_layout
+from components.heatmap import heatmap_layout
 
 # Top-level dashboard layout
 layout = html.Div([
@@ -22,7 +23,6 @@ layout = html.Div([
     html.Hr(),
 
     html.Div([
-        html.H2("Geospatial Crime Distribution"),
         map_layout
-    ])
+    ]) 
 ])
