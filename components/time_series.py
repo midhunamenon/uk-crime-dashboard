@@ -7,7 +7,8 @@ from utils.crime_analysis import get_crime_trend_by_type
 #Load and prepare the dataset
 df = pd.read_csv("data/processed/Combined_crime_data.csv")
 crime_time_series = get_crime_trend_by_type(df)
-crime_types = crime_time_series["Crime type"].unique()
+crime_types = sorted(crime_time_series["Crime type"].unique())
+crime_types.insert(0, "All Crimes") # Add to beginning for default
 
 #Function to build the interactive line chart
 def create_chart(selected):
@@ -17,16 +18,28 @@ def create_chart(selected):
     # Highlight the selected crime type
     # by making it more prominent
     # and grey out the others
-    for crime in crime_types:
-        data = crime_time_series[crime_time_series["Crime type"] == crime]
+    if selected == "All Crimes":
+        data = crime_time_series.groupby("Month")["Crime ID"].count().reset_index()
         fig.add_trace(go.Scatter(
             x=data["Month"],
             y=data["Crime ID"],
             mode="lines+markers",
-            name=crime,
-            line=dict(width=2.5 if crime == selected else 1),
-            opacity=1.0 if crime == selected else 0.2 #grey out others
+            name="All Crimes",
+            line=dict(width=3),
+            opacity=1.0
         ))
+    else:
+        # Add each crime type as a separate line
+        for crime in sorted(crime_time_series["Crime type"].unique()):
+            data = crime_time_series[crime_time_series["Crime type"] == crime]
+            fig.add_trace(go.Scatter(
+                x=data["Month"],
+                y=data["Crime ID"],
+                mode="lines+markers",
+                name=crime,
+                line=dict(width=2.5 if crime == selected else 1),
+                opacity=1.0 if crime == selected else 0.2 #grey out others
+            ))
 
     fig.update_layout(
         title="Crime Trends Over Time",
@@ -41,7 +54,7 @@ layout = html.Div([
     dcc.Dropdown(
         id="crime-type-toggle",
         options=[{"label": ct, "value": ct} for ct in crime_types],
-        value=crime_types[0],  # Default to the first crime type which loads the chart
+        value=crime_types[0],  # Default to the 'All crimes''
         clearable=False,
         style={"width": "50%"}
     ),
