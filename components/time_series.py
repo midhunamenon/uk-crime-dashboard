@@ -1,71 +1,59 @@
-from dash import dcc, html, Input, Output
+from dash import dcc, html, Input, Output, callback
 import pandas as pd
-import plotly.graph_objects as go
-import dash
-from utils.crime_analysis import get_crime_trend_by_type
+import plotly.express as px
+from utils.data_processing import combined_df
 
 #Load and prepare the dataset
-df = pd.read_csv("data/processed/Combined_crime_data.csv")
-crime_time_series = get_crime_trend_by_type(df)
-crime_types = sorted(crime_time_series["Crime type"].unique())
-crime_types.insert(0, "All Crimes") # Add to beginning for default
+#df = pd.read_csv("data/processed/Combined_crime_data.csv")
+#crime_time_series = get_crime_trend_by_type(df)
 
-#Function to build the interactive line chart
-def create_chart(selected):
-    fig = go.Figure()
+crime_types = sorted(combined_df["Crime type"].dropna().unique())
+crime_type_options = ["All Crimes"] + list(crime_types)
 
-    # Add each crime type as a sepearate line
-    # Highlight the selected crime type
-    # by making it more prominent
-    # and grey out the others
-    if selected == "All Crimes":
-        data = crime_time_series.groupby("Month")["Crime ID"].count().reset_index()
-        fig.add_trace(go.Scatter(
-            x=data["Month"],
-            y=data["Crime ID"],
-            mode="lines+markers",
-            name="All Crimes",
-            line=dict(width=3),
-            opacity=1.0
-        ))
-    else:
-        # Add each crime type as a separate line
-        for crime in sorted(crime_time_series["Crime type"].unique()):
-            data = crime_time_series[crime_time_series["Crime type"] == crime]
-            fig.add_trace(go.Scatter(
-                x=data["Month"],
-                y=data["Crime ID"],
-                mode="lines+markers",
-                name=crime,
-                line=dict(width=2.5 if crime == selected else 1),
-                opacity=1.0 if crime == selected else 0.2 #grey out others
-            ))
-
-    fig.update_layout(
-        title="Crime Trends Over Time",
-        xaxis_title="Month",
-        yaxis_title="Crime Count"
-    )
-    return fig
-
-# Layout with a crime type selector
-layout = html.Div([
-    html.Label("Highlight Crime Type:"),
+#Dash layout for the time series chart
+time_series_layout = html.Div([
+    html.H3("Crime Trends Over Time (Area Chart)"),
     dcc.Dropdown(
-        id="crime-type-toggle",
-        options=[{"label": ct, "value": ct} for ct in crime_types],
-        value=crime_types[0],  # Default to the 'All crimes''
+        id="time-series-crime-type-dropdown",
+        options=[{"label": ct, "value": ct} for ct in crime_type_options],
+        value="All Crimes",  # Default to 'All Crimes'
         clearable=False,
-        style={"width": "50%"}
     ),
-    dcc.Graph(id="line-chart")
+    dcc.Graph(id="time-series-chart")    
 ])
 
-# Callback for updating the line chart when toggle changes
-@dash.callback(
-    Output("line-chart", "figure"),
-    Input("crime-type-toggle", "value")
+# Dash callback to update area chart
+@callback(
+        Output("time-series-chart", "figure"),
+        Input("time-series-crime-type-dropdown", "value")
 )
-def update_line_chart(selected):
-    return create_chart(selected)
-        
+def update_time_series_chart(selected_crime):
+    if selected_crime == "All Crimes":
+        # Aggregate total crimes by month
+        monthly_data = (
+            combined_df.groupby("Month")
+            .size()
+            .reset_index(name="Count")
+        )
+        monthly_data["Crime type"] = "All Crimes"
+    else:
+        # Filter and aggregate by crime type and month
+        monthly_data = (
+            combined_df[combined_df["Crime type"] == selected_crime]
+            .groupby("Month")
+            .size()
+            .reset_index(name="Count")
+        )
+        monthly_data["Crime type"] = selected_crime
+            
+    fig = px.area(
+        monthly_data,
+        x="Month",
+        y="Count",
+        color="Crime type",
+        title=f"Crime Trends Over Time - {selected_crime}"
+    )
+    fig.update_layout(xaxis_title="Month", yaxis_title="Crime Count")
+    fig.update_layout(showlegend=False)
+    return fig
+
