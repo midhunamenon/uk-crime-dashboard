@@ -8,10 +8,21 @@ def get_crime_counts_by_month(df: pd.DataFrame) -> pd.DataFrame:
     df["Month"] = pd.to_datetime(df["Month"])
     return df.groupby("Month")["Crime ID"].count().reset_index()
 
-# Return time series data split by crime type
+# Return time series data split by crime type and include 'all crimes'
 def get_crime_trend_by_type(df: pd.DataFrame) -> pd.DataFrame:
     df["Month"] = pd.to_datetime(df["Month"])
+
+    # Group by crime type
+    crime_by_type = df.groupby(["Month",])
     return df.groupby(["Month", "Crime type"])["Crime ID"].count().reset_index()
+
+    # Calculate total crimes per month
+    all_crimes = df.groupby("Month")["Crime ID"].count().reset_index()
+    all_crimes["Crime type"] = "All Crimes"
+
+    #Combine
+    combined = pd.cpncat([crime_by_type, all_crimes], ignore_index=True)
+    return combined
 
 # Function to get crime counts by type for a specific month
 def get_crime_counts_by_type(df: pd.DataFrame, month: str) -> pd.DataFrame:
