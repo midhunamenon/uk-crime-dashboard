@@ -1,5 +1,5 @@
 from dash import html
-from components.charts import layout as bar_chart_layout, area_chart_layout
+from components.charts import bar_chart_layout, area_chart_layout
 from components.time_series import layout as time_series_layout
 from components.maps import map_layout
 from components.heatmap import heatmap_layout
@@ -28,7 +28,7 @@ layout = html.Div([
     # Trial section for heatmap
     html.H2("Trial", style={"textAlign": "center", "marginTop": "40px"}),
     html.Div(heatmap_layout, style={"padding": "20px"}),
-    
+
     html.Hr(),
     html.Footer(
         "Crime data sourced from UK Police API",
